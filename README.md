@@ -1,3 +1,23 @@
+# Modificaciones del codigo original
+
+Se ha preparado un video donde se explican y listan todas las modificaciónes realizadas para cumplir con el objetivo buscado. Puedes verlo en YouTube:
+
+[![Video explicativo del proyecto](https://img.youtube.com/vi/vDXziJqoVt8/0.jpg)](https://youtu.be/vDXziJqoVt8)
+
+Puedes encontrar el backend en: https://github.com/VictorPeso/EA_Flutter_Backend.git
+
+## IA Generativa:
+
+Con el fin de entender al máximo el funcionamiento de React Native he priorizado usar el minimo de IA Generativa posible. Limitando su uso a los tres casos contretos:
+
+1. **Autocompletado [GitHub Copilot]**: Uso del autocompletado de Visual Studio Code con el fin de escribir mas rápido o para saber bien bien como se introduce ciertos formatos de datos (p.e. el enum
+   dentro del modelo).
+2. **Lectura de codigo [ChatGPT]**: Explicaciones más detalladas y claras sobre algunos log de errores obtenidos y partes del codigo.
+
+El uso de IA ha sido evitado para cualquier otra situación.
+
+---
+
 # Express API — Mongoose + TypeScript In Depth
 
 API REST construida con **Node.js**, **Express**, **TypeScript** y **Mongoose** que gestiona dos entidades principales: `Organizacion` y `Usuario`.
@@ -6,15 +26,15 @@ API REST construida con **Node.js**, **Express**, **TypeScript** y **Mongoose** 
 
 ## Tecnologías
 
-| Paquete | Versión | Uso |
-|---|---|---|
-| express | ^4.17.3 | Framework HTTP |
-| mongoose | ^6.13.9 | ODM para MongoDB |
-| joi | ^17.6.0 | Validación de esquemas en peticiones |
-| dotenv | ^16.0.0 | Variables de entorno |
-| cors | ^2.8.6 | Política de acceso cruzado |
-| chalk | ^4.1.2 | Logging con color en consola |
-| typescript | ^4.5.5 | Tipado estático (devDependency) |
+| Paquete    | Versión | Uso                                  |
+| ---------- | ------- | ------------------------------------ |
+| express    | ^4.17.3 | Framework HTTP                       |
+| mongoose   | ^6.13.9 | ODM para MongoDB                     |
+| joi        | ^17.6.0 | Validación de esquemas en peticiones |
+| dotenv     | ^16.0.0 | Variables de entorno                 |
+| cors       | ^2.8.6  | Política de acceso cruzado           |
+| chalk      | ^4.1.2  | Logging con color en consola         |
+| typescript | ^4.5.5  | Tipado estático (devDependency)      |
 
 ---
 
@@ -46,7 +66,9 @@ src/
 ## Descripción de cada archivo
 
 ### `src/server.ts`
+
 Punto de entrada de la aplicación. Se encarga de:
+
 1. Conectar a MongoDB mediante Mongoose.
 2. Si la conexión es exitosa, inicia el servidor HTTP.
 3. Registra middlewares globales: logging de peticiones/respuestas, CORS, body parsers.
@@ -57,73 +79,78 @@ Punto de entrada de la aplicación. Se encarga de:
 ---
 
 ### `src/config/config.ts`
+
 Lee las variables de entorno mediante `dotenv` y exporta el objeto `config` con dos secciones:
+
 - `mongo.url` — URI de conexión a MongoDB.
 - `server.port` — Puerto del servidor HTTP (por defecto `1337`).
 
 ---
 
 ### `src/library/Logging.ts`
-Clase estática `Logging` con tres métodos de salida en consola, cada uno con un color diferente gracias a `chalk`:
-| Método | Color | Uso |
-|---|---|---|
-| `Logging.info()` | Azul | Información general |
-| `Logging.warning()` | Amarillo | Advertencias |
-| `Logging.error()` | Rojo | Errores |
+
+Clase estática `Logging` con tres métodos de salida en consola, cada uno con un color diferente gracias a `chalk`: | Método | Color | Uso | |---|---|---| | `Logging.info()` | Azul | Información
+general | | `Logging.warning()` | Amarillo | Advertencias | | `Logging.error()` | Rojo | Errores |
 
 ---
 
 ### `src/middleware/Joi.ts`
+
 Contiene dos exportaciones:
 
 - **`ValidateJoi(schema)`** — Middleware de orden superior que recibe un esquema Joi, valida el `req.body` y, si falla, devuelve `422 Unprocessable Entity`.
 - **`Schemas`** — Objeto con los esquemas de validación de cada entidad:
-  - `Schemas.organizacion.create` / `.update` → valida `{ name: string }`.
-  - `Schemas.usuario.create` / `.update` → valida `{ name: string, email: string, password: string (min 6), organizacion: ObjectId (24 hex) }`.
+    - `Schemas.organizacion.create` / `.update` → valida `{ name: string }`.
+    - `Schemas.usuario.create` / `.update` → valida `{ name: string, email: string, password: string (min 6), organizacion: ObjectId (24 hex) }`.
 
 ---
 
 ### `src/models/Organizacion.ts`
+
 Define el modelo Mongoose `Organizacion` con la siguiente estructura:
 
-| Campo | Tipo | Requerido |
-|---|---|---|
-| `_id` | ObjectId | Sí (auto) |
-| `name` | String | Sí |
+| Campo  | Tipo     | Requerido |
+| ------ | -------- | --------- |
+| `_id`  | ObjectId | Sí (auto) |
+| `name` | String   | Sí        |
 
 Interfaces TypeScript exportadas: `IOrganizacion`, `IOrganizacionModel`.
 
 ---
 
 ### `src/models/Usuario.ts`
+
 Define el modelo Mongoose `Usuario` con la siguiente estructura:
 
-| Campo | Tipo | Requerido | Notas |
-|---|---|---|---|
-| `_id` | ObjectId | Sí (auto) | |
-| `name` | String | Sí | |
-| `email` | String | Sí | Único |
-| `password` | String | Sí | |
-| `organizacion` | ObjectId | Sí | Referencia a `Organizacion` |
-| `createdAt` | Date | Auto | Generado por `timestamps: true` |
-| `updatedAt` | Date | Auto | Generado por `timestamps: true` |
+| Campo          | Tipo     | Requerido | Notas                           |
+| -------------- | -------- | --------- | ------------------------------- |
+| `_id`          | ObjectId | Sí (auto) |                                 |
+| `name`         | String   | Sí        |                                 |
+| `email`        | String   | Sí        | Único                           |
+| `password`     | String   | Sí        |                                 |
+| `organizacion` | ObjectId | Sí        | Referencia a `Organizacion`     |
+| `createdAt`    | Date     | Auto      | Generado por `timestamps: true` |
+| `updatedAt`    | Date     | Auto      | Generado por `timestamps: true` |
 
 Interfaces TypeScript exportadas: `IUsuario`, `IUsuarioModel`.
 
 ---
 
 ### `src/services/Organizacion.ts` y `src/services/Usuario.ts`
-Contienen la **lógica de negocio** y las llamadas directas a Mongoose. Es la capa encargada de interactuar con la persistencia de datos.
 
+Contienen la **lógica de negocio** y las llamadas directas a Mongoose. Es la capa encargada de interactuar con la persistencia de datos.
 
 ---
 
 ### `src/controllers/Organizacion.ts` y `src/controllers/Usuario.ts`
-Gestionan el protocolo HTTP. Reciben los datos del `Request`, llaman a la capa de **Service** correspondiente y devuelven la respuesta en el `Response` con el código de estado adecuado. No conocen los detalles de implementación de la base de datos.
+
+Gestionan el protocolo HTTP. Reciben los datos del `Request`, llaman a la capa de **Service** correspondiente y devuelven la respuesta en el `Response` con el código de estado adecuado. No conocen los
+detalles de implementación de la base de datos.
 
 ---
 
 ### `src/routes/Organizacion.ts` y `src/routes/Usuario.ts`
+
 Registran los endpoints de cada recurso con sus middlewares de validación Joi correspondientes y delegan la lógica al controlador.
 
 ---
@@ -147,46 +174,46 @@ El servidor corre en `http://localhost:1337` por defecto. La documentación inte
 
 ### General
 
-| Método | URL | Descripción |
-|---|---|---|
-| `GET` | `/ping` | Healthcheck — devuelve `{ "hello": "world" }` |
+| Método | URL     | Descripción                                   |
+| ------ | ------- | --------------------------------------------- |
+| `GET`  | `/ping` | Healthcheck — devuelve `{ "hello": "world" }` |
 
 ---
 
 ### Organizaciones — `/organizaciones`
 
-| Método | URL | Body (JSON) | Validación | Descripción | Respuesta éxito |
-|---|---|---|---|---|---|
-| `POST` | `/` | `{ "name": "string" }` | Joi required | Crea una nueva organización | `201` |
-| `GET` | `/` | — | — | Lista todas las organizaciones | `200` |
-| `GET` | `/:organizacionId` | — | — | Obtiene una organización por ID | `200` |
-| `PUT` | `/:organizacionId` | `{ "name": "string" }` | Joi required | Actualiza el nombre de una organización | `201` |
-| `DELETE` | `/:organizacionId` | — | — | Elimina una organización por ID | `201` |
+| Método   | URL                | Body (JSON)            | Validación   | Descripción                             | Respuesta éxito |
+| -------- | ------------------ | ---------------------- | ------------ | --------------------------------------- | --------------- |
+| `POST`   | `/`                | `{ "name": "string" }` | Joi required | Crea una nueva organización             | `201`           |
+| `GET`    | `/`                | —                      | —            | Lista todas las organizaciones          | `200`           |
+| `GET`    | `/:organizacionId` | —                      | —            | Obtiene una organización por ID         | `200`           |
+| `PUT`    | `/:organizacionId` | `{ "name": "string" }` | Joi required | Actualiza el nombre de una organización | `201`           |
+| `DELETE` | `/:organizacionId` | —                      | —            | Elimina una organización por ID         | `201`           |
 
 ---
 
 ### Usuarios — `/usuarios`
 
-| Método | URL | Body (JSON) | Validación | Descripción | Respuesta éxito |
-|---|---|---|---|---|---|
-| `POST` | `/` | `{ "name": string, "email": string, "password": password, "organizacion": "ObjectId" }` | Joi required | Crea un nuevo usuario | `201` |
-| `GET` | `/` | — | — | Lista todos los usuarios | `200` |
-| `GET` | `/:usuarioId` | — | — | Obtiene un usuario por ID (con populate de organización) | `200` |
-| `PUT` | `/:usuarioId` | `{ "name": string, ... }` | Joi required | Actualiza los datos de un usuario | `201` |
-| `DELETE` | `/:usuarioId` | — | — | Elimina un usuario por ID | `201` |
+| Método   | URL           | Body (JSON)                                                                             | Validación   | Descripción                                              | Respuesta éxito |
+| -------- | ------------- | --------------------------------------------------------------------------------------- | ------------ | -------------------------------------------------------- | --------------- |
+| `POST`   | `/`           | `{ "name": string, "email": string, "password": password, "organizacion": "ObjectId" }` | Joi required | Crea un nuevo usuario                                    | `201`           |
+| `GET`    | `/`           | —                                                                                       | —            | Lista todos los usuarios                                 | `200`           |
+| `GET`    | `/:usuarioId` | —                                                                                       | —            | Obtiene un usuario por ID (con populate de organización) | `200`           |
+| `PUT`    | `/:usuarioId` | `{ "name": string, ... }`                                                               | Joi required | Actualiza los datos de un usuario                        | `201`           |
+| `DELETE` | `/:usuarioId` | —                                                                                       | —            | Elimina un usuario por ID                                | `201`           |
 
 ---
 
 ## 🎓 Ejercicio de Seminario
 
-En la carpeta `ejercicio-seminario/` encontrarás material didáctico sobre cómo implementar relaciones entre modelos en Mongoose (Manual vs Virtuals). 
+En la carpeta `ejercicio-seminario/` encontrarás material didáctico sobre cómo implementar relaciones entre modelos en Mongoose (Manual vs Virtuals).
 
 ---
 
 ## Instalación y ejecución
 
 ```bash
-# Instalar dependencias 
+# Instalar dependencias
 npm install
 
 # Iniciar el servidor
@@ -194,6 +221,7 @@ npm start
 ```
 
 Para compilar manualmente:
+
 ```bash
 npx tsc
 ```
